@@ -2,14 +2,6 @@ package com.smartrama.tasks.leus.longdevision;
 
 public class LongDivision {
 
-    public static void main(String[] args) {
-        LongDivision retro = new LongDivision();
-        System.out.println(retro.getDivision(327678,224));
-//        System.out.println(retro.getDivision(32,8));
-//        System.out.println(retro.getDivision(124,4));
-
-    }
-
     private String result = "";
     int countOfLines = 1;
     int[] containerDigitalsFromDividend;
@@ -44,8 +36,7 @@ public class LongDivision {
     }
 
     private void outFirstLine(long dividend, long diviser) {
-        result = "_ " + dividend + " |_" + diviser + "_";
-        System.out.println(result);
+        result = "_ " + dividend + " |_" + diviser + "_" + "\n" ;
         countOfLines++;
     }
 
@@ -65,25 +56,27 @@ public class LongDivision {
 
     private void outSecondLine(long dividend, long diviser) {
 
-        intermediateDividend = Long.parseLong(getShortDividend(diviser));
+        preIntermediateDividend = Long.parseLong(getShortDividend(diviser));
         // получаем первое делимое, равный кол-ву цифр в делителе
-        changeContainerDigitalsFromDividend((String.valueOf(intermediateDividend).length()));
+        changeContainerDigitalsFromDividend((String.valueOf(preIntermediateDividend).length()));
 
-        if (intermediateDividend > diviser) { // если первое делимое больше делителя, то печатаем вторую строку
+        if (preIntermediateDividend > diviser) { // если первое делимое больше делителя, то печатаем вторую строку
 
-            System.out.println("  " + difference(intermediateDividend,diviser) + spaces(dividend, intermediateDividend) + " | "
-                    + dividend / diviser);
-            System.out.println(underline(dividend));
+            intermediateDividend = difference(preIntermediateDividend,diviser);
+
+            result += "  " + intermediateDividend + spaces(dividend, preIntermediateDividend) + " | "
+                    + (dividend / diviser) + "\n" +(underline(dividend)) + "\n";
             countOfLines++;
 
         } else { // иначе добавляем в первый делитель еще одну цифру
 
-            intermediateDividend = Long.parseLong(getShortDividendAddOneDigital(intermediateDividend));
-            changeContainerDigitalsFromDividend((String.valueOf(intermediateDividend).length())-1);
+            preIntermediateDividend = Long.parseLong(getShortDividendAddOneDigital(preIntermediateDividend));
+            changeContainerDigitalsFromDividend(1);
 
-            System.out.println("  " + difference(intermediateDividend,diviser) + spaces(dividend, intermediateDividend) + " | "
-                    + dividend / diviser);
-            System.out.println(underline(dividend));
+            intermediateDividend = difference(preIntermediateDividend,diviser);
+
+            result += "  " + intermediateDividend + spaces(dividend, preIntermediateDividend) + " | "
+                    + dividend / diviser + "\n" +(underline(dividend))+ "\n";;
             countOfLines++;
         }
     }
@@ -104,28 +97,25 @@ public class LongDivision {
         printForOtherLines();
     }
 
-    // переводим в массив все цифры делимого
-
     private void printLastLine() {
         if (preIntermediateDividend != intermediateDividend){
-            System.out.println(spaces() + (preIntermediateDividend-intermediateDividend));
+            result += spaces() + (preIntermediateDividend-intermediateDividend) + "\n";
         }
     }
 
     private void printForOtherLines() {
-        System.out.println(spaces() + preIntermediateDividend);
-        System.out.println(spaces() + intermediateDividend);
-        System.out.println(underline(preIntermediateDividend));
+        result += (spaces() + preIntermediateDividend) + "\n" +spaces() + intermediateDividend
+                + "\n" + underline(preIntermediateDividend) + "\n";
         countOfLines++;
     }
-    // метод печпти в консоль
+    // метод печaти в консоль
 
     private String spaces() {
-        String result = "";
+        String resultLocal = "";
         for (int i = 0; i < countOfLines ; i++) {
-            result += " ";
+            resultLocal += " ";
         }
-        return result;
+        return resultLocal;
     }
 
     private String getShortDividendAddOneDigital(long number) {
@@ -137,7 +127,6 @@ public class LongDivision {
         } else {
             resultLocal = String.valueOf(containerDigitalsFromDividend[0]);
         }
-//        preIntermediateDividend = Long.parseLong(resultLocal);
         return resultLocal;
     }
     // получаем стоку с добавленной одной цифрой из массива
@@ -155,37 +144,36 @@ public class LongDivision {
     // возвращает разницу между preintermediateDividend и intermediateDividend
 
     private String spaces(long dividend, long firstDividend) {
-        String result = "";
+        String resultLocal = "";
         for (int i = 0; i <(String.valueOf(dividend).length() - String.valueOf(firstDividend).length()) ; i++) {
-            result += " ";
+            resultLocal += " ";
         }
-        return result;
+        return resultLocal;
     }
     // метод печатающий пробелы
 
     private String underline (long dividend) {
-        String result = "";
+        String resultLocal = "";
         for (int i = 0; i <countOfLines ; i++) {
-            result += " ";
+            resultLocal += " ";
         }
 
         for (int i = 0; i <(String.valueOf(dividend).length()) ; i++) {
-            result += "_";
+            resultLocal += "_";
         }
-        return result;
+        return resultLocal;
     }
     // метод печатающий подчеркивание
 
     private String getShortDividend(long diviser) {
         // получаем строку из массива = кол-ву цифр в делителе
-        String result = "";
+        String resultLocal = "";
         int i = 0;
         for (; i < (Long.toString(diviser)).length() ; i++) {
-            result += containerDigitalsFromDividend[i];
+            resultLocal += containerDigitalsFromDividend[i];
         }
-//        changeContainerDigitalsFromDividend(containerDigitalsFromDividend, i); // и меняем массив, удаляя резалт
-        preIntermediateDividend = Long.parseLong(result);
-        return result;
+        preIntermediateDividend = Long.parseLong(resultLocal);
+        return resultLocal;
     }
     // получаем строку из массива = кол-ву цифр в делителе // preIntermediateDividend = Long.parseLong(result);
 
