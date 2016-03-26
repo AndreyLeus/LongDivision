@@ -10,13 +10,23 @@ public class LongDivision {
 
     public String getDivision(long dividend, long diviser) {
 
+        if (dividend < 0 || diviser < 0) {
+            return "entered numbers must be positive";
+        }
+
         if (!checkDividentMoreThanDiviser(dividend,diviser)) {
             return "diviser more than dividend!";
         }
 
+
         if (!checkDiviserIsNotZero(diviser)) {
             return "diviser couldn't be equals zero!";
         }
+
+        if (dividend == diviser) {
+          return "_" + dividend + "|_" + diviser + "_" + "\n" + " " + dividend + "| 1" + "\n";
+        }
+
 
         outFirstLine(dividend, diviser);
 
@@ -133,7 +143,7 @@ public class LongDivision {
 
     private long difference (long dividend, long diviser) {
         int i = 1;
-        for (; i <9 ; i++) {
+        for (; i <10 ; i++) {
             if ((dividend - diviser*i)<0){
                 break;
             }
